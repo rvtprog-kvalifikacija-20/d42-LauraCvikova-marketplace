@@ -1,0 +1,1 @@
+{"captcha":{"enabled":false,"key":""},"hsite_redirect_url":"","prefill_phone_number":"","gdpr_required":true,"tos_version":"eu","sideload_url":null}

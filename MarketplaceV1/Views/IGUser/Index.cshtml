@@ -1,0 +1,17 @@
+﻿@{
+
+}
+<h2 class="text-center">@ViewBag.Name</h2>
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h3>@Html.Raw(ViewBag.Image)</h3>
+    </div>
+
+    <div class="col-md-4">
+        <p>Information:</p>
+        <p>Subscribers: @ViewBag.Sub </p>
+        <p>BIO: @ViewBag.Bio </p>
+        <p>Reviews: </p>
+    </div>
+</div>
