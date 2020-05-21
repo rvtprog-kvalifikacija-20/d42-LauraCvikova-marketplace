@@ -1,4 +1,5 @@
-﻿@model MarketplaceV1.Models.IndexViewModel
+﻿@using Microsoft.AspNet.Identity;
+@model MarketplaceV1.Models.IndexViewModel
 @{
     ViewBag.Title = "Manage";
 }
@@ -7,7 +8,7 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    <h4>Change your account settings</h4>
+    <h4>@User.Identity.GetUserName()</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>Password:</dt>
@@ -28,15 +29,24 @@
             @Model.Logins.Count [
             @Html.ActionLink("Manage", "ManageLogins") ]
         </dd>
+
+        <dt>Became a blogger!</dt>
+        <dd>
+            @using (Html.BeginForm("Index", "IGUser", FormMethod.Get))
+            {
+                <input type="text" name="bloggerName" placeholder="your nickname"/>
+                <input type="submit" value="submit" />
+            }
+        </dd>
         @*
             Phone Numbers can used as a second factor of verification in a two-factor authentication system.
-             
+
              See <a href="https://go.microsoft.com/fwlink/?LinkId=403804">this article</a>
                 for details on setting up this ASP.NET application to support two-factor authentication using SMS.
-             
+
              Uncomment the following block after you have set up two-factor authentication
         *@
-        @*  
+        @*
             <dt>Phone Number:</dt>
             <dd>
                 @(Model.PhoneNumber ?? "None")
