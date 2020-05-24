@@ -1,11 +1,18 @@
 ﻿@{
 
 }
+
 <h2 class="text-center">@ViewBag.Name</h2>
 <div class="row">
-    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        
+    </div>
     <div class="col-md-4">
         <h3>@Html.Raw(ViewBag.Image)</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-gap: 5px; justify-content: center;">
+            @foreach (var img in ViewBag.Images)
+            {@Html.Raw(@img)}
+        </div>
     </div>
 
     <div class="col-md-4">
@@ -15,3 +22,10 @@
         <p>Reviews: </p>
     </div>
 </div>
+@if (ViewBag.Email != null)
+{
+    <div class="row">
+        <div class="col text-success">(Registrated) Email: @ViewBag.Email</div>
+    </div>
+
+}

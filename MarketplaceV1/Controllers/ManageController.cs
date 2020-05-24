@@ -70,8 +70,15 @@ namespace MarketplaceV1.Controllers
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+
             };
+            ApplicationUser usermodel = UserManager.FindById(User.Identity.GetUserId());
+            if (usermodel.IsBlogger)
+            {
+                ViewBag.nickname = "";  
+                ViewBag.nickname = usermodel.Nickname;
+            }
             return View(model);
         }
 
@@ -242,6 +249,36 @@ namespace MarketplaceV1.Controllers
             }
             AddErrors(result);
             return View(model);
+        }
+
+        //
+        // GET: /Manage/ChangePassword
+        public ActionResult BecomeBlogger()
+        {
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> BecomeBlogger(BecomeBloggerViewModel model)
+        {
+            var user = UserManager.Users.FirstOrDefault(u => u.Nickname == model.Nickname);
+            if (user == null)
+            {
+                ApplicationUser usermodel = UserManager.FindById(User.Identity.GetUserId());
+                usermodel.BecameBlogger(model.Nickname);
+
+                IdentityResult result = await UserManager.UpdateAsync(usermodel);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Manage");
+                }
+            }
+            ViewBag.Message = "Nickname already taken!";
+            return View();
+            
         }
 
         //

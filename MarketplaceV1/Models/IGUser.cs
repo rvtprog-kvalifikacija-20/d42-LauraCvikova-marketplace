@@ -9,7 +9,7 @@ using System.Web;
 
 namespace MarketplaceV1.Models
 {
-    public class IGUser
+    public class IGUser : ApplicationUser
     {
         public string data;
 
@@ -41,12 +41,35 @@ namespace MarketplaceV1.Models
             this.data = json;
             
         }
+        public IGUser()
+        {
+            this.data = null;
+        }
         public string GetImage()
         {
             var inst = JsonConvert.DeserializeObject<dynamic>(this.data);
             return "<img src=\"" + inst.SelectToken("graphql.user.profile_pic_url_hd").ToString() + "\">";
-        }
 
+
+        }
+        
+        public List<string> GetImages()
+        {
+            var inst = JsonConvert.DeserializeObject<dynamic>(this.data);
+            List<string> images = new List<string>(); 
+            for (int i = 0; i < 9; i++)
+            {
+                try
+                {
+                    images.Add("<img src=\"" + inst.SelectToken("graphql.user.edge_owner_to_timeline_media.edges[" + i.ToString() + "].node.display_url").ToString() + "\"  style=\"height:150px; width:150px; object-fit:cover;     \">");
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            return images;
+        }
         public string GetName()
         {
             return JsonConvert.DeserializeObject<dynamic>(this.data).SelectToken("graphql.user.full_name").ToString();

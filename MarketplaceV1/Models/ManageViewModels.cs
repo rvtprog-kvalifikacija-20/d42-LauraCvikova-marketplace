@@ -18,7 +18,7 @@ namespace MarketplaceV1.Models
     {
         public IList<UserLoginInfo> CurrentLogins { get; set; }
         public IList<AuthenticationDescription> OtherLogins { get; set; }
-    }
+    } 
 
     public class FactorViewModel
     {
@@ -39,6 +39,15 @@ namespace MarketplaceV1.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class BecomeBloggerViewModel
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Your Instagram nickname")]
+        public string Nickname { get; set; }
+
+    } 
+    
     public class ChangePasswordViewModel
     {
         [Required]

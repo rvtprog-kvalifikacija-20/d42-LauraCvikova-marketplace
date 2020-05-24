@@ -174,6 +174,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005211933252_InitialCreate.cs" />
+    <Compile Include="Migrations\202005211933252_InitialCreate.Designer.cs">
+      <DependentUpon>202005211933252_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005241638449_IGuser.cs" />
+    <Compile Include="Migrations\202005241638449_IGuser.Designer.cs">
+      <DependentUpon>202005241638449_IGuser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005241940327_IGuser-BcmeBlogger.cs" />
+    <Compile Include="Migrations\202005241940327_IGuser-BcmeBlogger.Designer.cs">
+      <DependentUpon>202005241940327_IGuser-BcmeBlogger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005241948556_nullable-datetime.cs" />
+    <Compile Include="Migrations\202005241948556_nullable-datetime.Designer.cs">
+      <DependentUpon>202005241948556_nullable-datetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005242013131_string-to-text.cs" />
+    <Compile Include="Migrations\202005242013131_string-to-text.Designer.cs">
+      <DependentUpon>202005242013131_string-to-text.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202005242036578_addded-nickname.cs" />
+    <Compile Include="Migrations\202005242036578_addded-nickname.Designer.cs">
+      <DependentUpon>202005242036578_addded-nickname.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IGUser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -241,6 +266,7 @@
     <Content Include="Views\Home\TestPage.cshtml" />
     <Content Include="Views\IGUser\Index.cshtml" />
     <Content Include="Views\IGUser\NoUser.cshtml" />
+    <Content Include="Views\Manage\BecomeBlogger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -257,6 +283,26 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202005211933252_InitialCreate.resx">
+      <DependentUpon>202005211933252_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005241638449_IGuser.resx">
+      <DependentUpon>202005241638449_IGuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005241940327_IGuser-BcmeBlogger.resx">
+      <DependentUpon>202005241940327_IGuser-BcmeBlogger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005241948556_nullable-datetime.resx">
+      <DependentUpon>202005241948556_nullable-datetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005242013131_string-to-text.resx">
+      <DependentUpon>202005242013131_string-to-text.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005242036578_addded-nickname.resx">
+      <DependentUpon>202005242036578_addded-nickname.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
