@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 
 namespace MarketplaceV1.Models
 {
@@ -15,7 +16,8 @@ namespace MarketplaceV1.Models
 
         public IGUser(string name)
         {
-            string path = @"C:\Users\User\source\repos\MarketplaceV1\MarketplaceV1\cache\" + name+".txt";
+            
+            string path = HostingEnvironment.MapPath("~/cache/" + name + ".txt");
             string json = string.Empty;
             try
             {
@@ -70,6 +72,7 @@ namespace MarketplaceV1.Models
             }
             return images;
         }
+
         public string GetName()
         {
             return JsonConvert.DeserializeObject<dynamic>(this.data).SelectToken("graphql.user.full_name").ToString();

@@ -1,0 +1,164 @@
+﻿<div class="chat_page container">
+    <div class="row">
+        <div class="col-xs-12 col-md-3">
+            <aside class="main visible-md visible-lg">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="panel panel-default users__bar">
+                            <div class="panel-heading users__heading">
+                                Contacts (@ViewBag.allUsers.Count)
+                            </div>
+                            <div class="panel-body users__body">
+                                <ul id="contacts" class="list-group">
+
+                                    @foreach (var user in @ViewBag.allUsers)
+                                    {
+
+                                        <li class="contact__item">
+                                            <a class="user__item contact-@user.Id" href="#" data-contact-id="@user.Id" data-contact-name="@user.Nickname">
+                                                <div class="avatar">
+                                                    <img src="@user.GetImageUrl()" style="width: 60px">
+                                                </div>
+                                                <div>
+                                                    @user.Nickname
+                                                    @if (ViewBag.sentMessagesFromId.Contains(user.Id))
+                                                    {
+                                                        <span class="not-seen"></span>
+                                                    }
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+        <div class="col-xs-12 col-md-9 chat__body">
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul id="chat" class="list-group chat__main panel panel-default">
+                        <div class="__no__chat__">
+                            <h1>Select a contact to chat with</h1>
+                        </div>
+                    </ul>
+                </div>
+                <div class="chat__type__body">
+                    <div class="chat__type d-none">
+                        <textarea id="msg_box" placeholder="Type your message"></textarea>
+                        <button class="btn btn-primary" id="sendMessage">Send</button>
+                    </div>
+                </div>
+                <div class="chat__typing">
+                    <span id="typerDisplay"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+let currentContact = null;
+let newMessageTpl =
+`<div>
+    <div id="msg-{{id}}" class="msg from-{{lr}}">
+        <div class="__chat__">
+        <p>{{body}}</p>
+        <small class="date">{{date}}</small>{{not-seen}}
+        </div>
+    </div>
+    </div>`;
+
+$('.user__item').click( function(e) {
+    e.preventDefault();
+    $(".chat__type.d-none").removeClass('d-none');
+    currentContact = {
+        id: $(this).data('contact-id'),
+        name: $(this).data('contact-name'),
+    };
+        
+    $('#contacts').find('li').removeClass('active');
+
+    $('#contacts .contact-' + currentContact.id).find('li').addClass('active');
+    getChat(currentContact.id);
+});
+
+function getChat( contact_id ) {
+    $.get("/Chat/ChatWithContact", { contact: contact_id })
+        .done(function (resp) {
+        var chat_data = resp.data || [];
+        loadChat( chat_data );
+        });
+}
+
+function loadChat( chat_data ) {
+    $('#chat').empty();
+    chat_data.forEach( function(data) {
+        displayMessage(data);
+    });
+        
+    $('.chat__body').show();
+    $('.__no__chat__').hide();
+}
+function serverDateToHuman(date) {
+    date = date.replace(/\D/g, '');
+    let unix_timestamp = date
+    var newDate = new Date(parseInt(unix_timestamp));
+    return newDate.toLocaleString()
+}
+function displayMessage(message_obj) {
+        
+    const msg_id = message_obj.Id;
+    const msg_body = message_obj.Message;
+
+    const msg_date = serverDateToHuman(message_obj.DateTime);
+
+    let template = $(newMessageTpl).html();
+
+    if (currentContact.id != message_obj.ReciverId) {
+        template = template.replace("{{not-seen}}", ""); 
+        template = template.replace("{{lr}}", "right");
+        template = template.replace("{{rl}}", "left");
+    } else {
+        if (message_obj.Seen) {
+            template = template.replace("{{not-seen}}", ""); 
+        } else {
+            template = template.replace("{{not-seen}}", "<span class=\"not-seen\"></span>"); 
+        }
+        template = template.replace("{{lr}}", "left");
+        template = template.replace("{{rl}}", "right");
+    }
+    
+    template = template.replace("{{id}}", msg_id);
+    template = template.replace("{{body}}", msg_body);
+    template = template.replace("{{date}}", msg_date);
+    template = $(template);
+
+    if ( message_obj.sender_id == "@ViewBag.currentUser.Id") {
+        template.find('.__chat__').addClass('from__chat');
+    } else {
+        template.find('.__chat__').addClass('receive__chat');
+    }
+
+    if ( message_obj.status == 1 ) {
+        template.find('.delivery-status').show();
+    }
+
+    $('.chat__main').append(template);
+    }
+
+
+    $('#sendMessage').click(function () {
+        $.post("/Chat/SendMessage", {
+            message: $('#msg_box').val(),
+            contact: currentContact.id
+        }).done(function (data) {
+                
+            displayMessage(data);
+            $('#msg_box').val('');
+        });
+    });
+
+</script>

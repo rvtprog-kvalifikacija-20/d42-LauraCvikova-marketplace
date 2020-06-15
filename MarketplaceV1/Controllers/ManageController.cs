@@ -61,10 +61,11 @@ namespace MarketplaceV1.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ChangeEmailSuccess? "Your email has been changed."
                 : "";
 
-            var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
+            var userId = User.Identity.GetUserId(); 
+             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
@@ -250,16 +251,55 @@ namespace MarketplaceV1.Controllers
             AddErrors(result);
             return View(model);
         }
-
         //
         // GET: /Manage/ChangePassword
-        public ActionResult BecomeBlogger()
+        public ActionResult ChangeEmail()
         {
             return View();
         }
 
         //
         // POST: /Manage/ChangePassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var id = User.Identity.GetUserId();
+            var user = await UserManager.FindByIdAsync(id);
+            using (var db = new ApplicationDbContext())
+            {
+                if (db.Users.Where(u => u.Email.Equals(model.NewEmail)).Any())
+                {
+                    ViewBag.Message = "Email already taken!";
+                    return View(model);
+                } 
+            }
+            user.Email = model.NewEmail;
+            user.UserName = model.NewEmail;
+            var result = await UserManager.UpdateAsync(user);
+    
+            if (result.Succeeded)
+            {
+                user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                if (user != null)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                }
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
+            }
+            AddErrors(result);
+            return View(model);
+        }
+
+        public ActionResult BecomeBlogger()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> BecomeBlogger(BecomeBloggerViewModel model)
@@ -281,6 +321,17 @@ namespace MarketplaceV1.Controllers
             
         }
 
+        public ActionResult StopBeingBlogger()
+        {
+            string id =  HttpContext.User.Identity.GetUserId();
+            using(var db = new ApplicationDbContext())
+            {
+                db.Users.Where(u => u.Id.Equals(id)).FirstOrDefault().IsBlogger = false;
+                db.Users.Where(u => u.Id.Equals(id)).FirstOrDefault().Nickname = String.Empty;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "Manage");
+        }
         //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
@@ -418,6 +469,7 @@ namespace MarketplaceV1.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
+            ChangeEmailSuccess,
             Error
         }
 

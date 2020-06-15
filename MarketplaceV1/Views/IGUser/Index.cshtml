@@ -5,7 +5,12 @@
 <h2 class="text-center">@ViewBag.Name</h2>
 <div class="row">
     <div class="col-md-4">
-        
+    @if (ViewBag.IsBlogger)
+    {
+       @Html.Partial("Calendar");
+    }
+         
+
     </div>
     <div class="col-md-4">
         <h3>@Html.Raw(ViewBag.Image)</h3>

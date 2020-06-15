@@ -1,0 +1,55 @@
+﻿<h3>Calendar of reservations</h3>
+<div><span class="blue-box"></span> - reserved dates</div>
+@if (ViewBag.MyCalendar != null)
+{
+    if (ViewBag.MyCalendar)
+    {
+        @:Click on dates too make them booked
+    }
+}
+
+<table class="calendar @if (ViewBag.MyCalendar != null) { if (ViewBag.MyCalendar) { @: my_table
+       } 
+} ">
+
+    <tbody>
+        <tr>
+            @for (int i = 0; i < 42; i++)
+            {
+                DateTime date = DateTime.Now.AddDays(i + 1 - (int)DateTime.Now.DayOfWeek);
+                if (i % 7 == 0 && i > 0)
+                {
+                @:</tr><tr>
+                }
+                <td data-date="@date.Date" date-id="@i" class="bookable_date
+                    @if (ViewBag.Bookings != null) { 
+                    if (ViewBag.Bookings.Count > 0) {
+                        if (ViewBag.Bookings.Contains(date.Date)) { @: booked
+                            }
+                            }
+                    }
+                            ">
+                    @date.Day/@date.Month
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(() => {
+        var dates = $(".my_table .bookable_date");
+        dates.each((index, element) => {
+            $(element).click(() => {
+                $.get("IGUser/Book", { date: $(element).data("date") }).done((data) => {
+                    if (data.status == "added") {
+                        $(element).addClass("booked")
+                    }
+                    if (data.status == "removed") {
+                        $(element).removeClass("booked")
+                    }
+                });
+            });
+        });
+    });
+</script>

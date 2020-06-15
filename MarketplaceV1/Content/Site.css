@@ -1,6 +1,12 @@
-﻿body {
+﻿* {
+    font-family: "Roboto", sans-serif;
+    font-style: normal;
+    font-weight: 400;
+}
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -15,15 +21,83 @@
 .dl-horizontal dt {
     white-space: normal;
 }
-
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.d-none{
+    display: none;
 }
-
+textarea {
+    resize: none;
+}
 .search-bar {
     display: flex;
     margin: 8px 0 0 0;
+}
+.chat_page li.contact__item{
+    list-style:none;
+}
+.chat_page .contact__item .avatar,
+.chat_page .contact__item div {
+    text-align: center;
+    display: block;
+}
+small {
+    font-size: 9px;
+    color: #383838;
+}
+#msg_box {
+    width: 100%;
+}
+#chat {
+    width: 100%;
+    height: 600px;
+    padding: 25px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#chat p {
+    margin: 0;
+}
+#chat .msg {
+    margin: 10px 0 0;
+    padding: 10px;
+    width: fit-content;
+    border-radius:10px;
+}
+    #chat .msg.from-left {
+        margin-right: auto;
+        background-color: #b1b6b7;
+    }
+#chat .msg.from-right {
+    margin-left: auto;
+    background-color: #e3dac9;
+}
+.chat_page div.panel-body.users__body {
+    height: 600px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.not-seen {
+    background-color: #337ab7;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    z-index: 10;
+    border-radius: 5px;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+.calendar td {
+    padding: 10px;
+    border: 0.5px solid #333333;
+    text-align: center;
+    cursor: pointer;
+}
+.calendar td.booked {
+    background-color: #337ab7;
+    color: white;
+}
+.blue-box {
+    display: inline-block;
+    width: 22px;
+    height: 10px;
+    background: #337ab7;
 }

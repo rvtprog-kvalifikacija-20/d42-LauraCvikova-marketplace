@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -18,6 +19,10 @@
                     <span class="icon-bar"></span>
                 </button>
                 @Html.ActionLink("Marketplace", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @if (Request.IsAuthenticated)
+                {
+                    @Html.ActionLink("Chats", "Index", "Chat", new { area = "" }, new { @class = "navbar-brand" })
+                }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -33,6 +38,9 @@
                         }
                     </li>
                 </ul>
+                
+
+
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
@@ -40,9 +48,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")

@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Newtonsoft.Json;
@@ -30,7 +31,11 @@ namespace MarketplaceV1.Models
             var inst = JsonConvert.DeserializeObject<dynamic>(this.Data);
             return "<img src=\"" + inst.SelectToken("graphql.user.profile_pic_url_hd").ToString() + "\">";
         }
-
+        public string GetImageUrl()
+        {
+            var inst = JsonConvert.DeserializeObject<dynamic>(this.Data);
+            return  inst.SelectToken("graphql.user.profile_pic_url_hd").ToString() ;
+        }
         public string GetName()
         {
             return JsonConvert.DeserializeObject<dynamic>(this.Data).SelectToken("graphql.user.full_name").ToString();
@@ -65,7 +70,7 @@ namespace MarketplaceV1.Models
 
         public string GetInstaData(string name)
         {
-            string path = @"C:\Users\User\source\repos\MarketplaceV1\MarketplaceV1\cache\" + name + ".txt";
+            string path = HostingEnvironment.MapPath("~/cache/" + name + ".txt"); ;
             string json = string.Empty;
             try
             {
@@ -102,16 +107,5 @@ namespace MarketplaceV1.Models
         }
     }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-    }
+    
 }

@@ -24,27 +24,35 @@
             }
             ]
         </dd>
-        <dt>External Logins:</dt>
+        <dt>Email:</dt>
         <dd>
-            @Model.Logins.Count [
-            @Html.ActionLink("Manage", "ManageLogins") ]
+            [
+            
+                @Html.ActionLink("Change your email", "ChangeEmail")
+            
+            ]
         </dd>
 
         <dt>Became a blogger!</dt>
         <dd>
             [
-            @if (ViewBag.nickname!="" && ViewBag.nickname!=null)
+            @if (ViewBag.nickname != "" && ViewBag.nickname != null)
             {
+
                 <a href="@Url.Action("Index","IGUser")?user=@ViewBag.nickname">My account</a>
+                <span>][</span>
+                @Html.ActionLink("Stop being blogger", "StopBeingBlogger")
 
             }
             else
             {
+
                 @Html.ActionLink("Become blogger", "BecomeBlogger")
+
             }
             ]
         </dd>
-       
-     
+
+
     </dl>
 </div>

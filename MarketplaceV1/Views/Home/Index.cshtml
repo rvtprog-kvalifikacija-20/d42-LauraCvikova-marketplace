@@ -3,9 +3,21 @@
 }
 
 
-<div class="row">
-    <h1>@ViewBag.Title</h1>
-    <p>This is markeplace, where you can buy ads for your own purpouses. Be sure that you won't be scammed- this service is made to provide only secure payments and deals!<br></p>
+    <div class="row">
+        <h1>@ViewBag.Title</h1>
+        <p>This is markeplace, where you can buy ads for your own purpouses. Be sure that you won't be scammed- this service is made to provide only secure payments and deals!<br></p>
+        <h1>Our Users: </h1>
+        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr;">
+            @foreach (var user in ViewBag.Users)
+            {
+                <div style="display: flex; justify-content: center">
+                    <a href="/IGuser?user=@user.Nickname" style=" display: grid; justify-content: center; text-align: center;">
+                        <img src="@user.GetImageUrl()" style="width: 190px"/>
+                        @user.Nickname  
+                    </a>
+                </div>
+            }
+        </div>
 
-    <h2>To start discovering new profiles, just type their nicknames in search bar!</h2>
-</div>
+        <h2>To start discovering new profiles, just type their nicknames in search bar!</h2>
+    </div>

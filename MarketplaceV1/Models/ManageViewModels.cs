@@ -45,7 +45,6 @@ namespace MarketplaceV1.Models
         [DataType(DataType.Text)]
         [Display(Name = "Your Instagram nickname")]
         public string Nickname { get; set; }
-
     } 
     
     public class ChangePasswordViewModel
@@ -66,7 +65,14 @@ namespace MarketplaceV1.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
+    public class ChangeEmailViewModel
+    {
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "New Email")]
+        public string NewEmail { get; set; }
 
+    }
     public class AddPhoneNumberViewModel
     {
         [Required]
